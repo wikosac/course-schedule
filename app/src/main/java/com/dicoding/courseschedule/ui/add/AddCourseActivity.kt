@@ -30,8 +30,12 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
         viewModel = ViewModelProvider(this, factory)[AddCourseViewModel::class.java]
 
         viewModel.saved.observe(this) {
-            it.getContentIfNotHandled()
-            Log.d("testo", "onCreate: ${it.getContentIfNotHandled()}")
+            if (it.getContentIfNotHandled()!!) {
+                Toast.makeText(this, "Course inserted successfully", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to insert course", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.ibStartTime.setOnClickListener { showTimePicker("startTimePicker") }
