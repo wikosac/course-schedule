@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
@@ -79,7 +80,7 @@ class ListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //TODO 14 : Fixing bug : sort menu not show and course not deleted when list is swiped
+    // Fixing bug : sort menu not show and course not deleted when list is swiped
     private fun showSortMenu() {
         val view = findViewById<View>(R.id.action_sort) ?: return
         PopupMenu(this, view).run {
@@ -138,7 +139,8 @@ class ListActivity : AppCompatActivity() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val course = (viewHolder as CourseViewHolder).getCourse()
-
+            viewModel.delete(course)
+            Toast.makeText(this@ListActivity, "Course deleted!", Toast.LENGTH_SHORT).show()
         }
     }
 }
