@@ -55,7 +55,7 @@ class ListActivity : AppCompatActivity() {
     private fun onCourseClick(course: Course) {
         // Intent and show detailed course
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("course", course)
+        intent.putExtra(DetailActivity.COURSE_ID, course.id)
         startActivity(intent)
     }
 

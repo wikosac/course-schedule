@@ -14,10 +14,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         // Update theme based on value in ListPreference
         val themePreference = findPreference<ListPreference>(getString(R.string.pref_key_dark))
-        themePreference?.setOnPreferenceChangeListener { preference, newValue ->
+        themePreference?.setOnPreferenceChangeListener { _, newValue ->
             val nightMode = when (newValue) {
-                getString(R.string.dark_mode_off) -> AppCompatDelegate.MODE_NIGHT_NO
-                getString(R.string.dark_mode_on) -> AppCompatDelegate.MODE_NIGHT_YES
+                getString(R.string.pref_dark_on) -> AppCompatDelegate.MODE_NIGHT_YES
+                getString(R.string.pref_dark_off) -> AppCompatDelegate.MODE_NIGHT_NO
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
             updateTheme(nightMode)
