@@ -1,12 +1,16 @@
 package com.dicoding.courseschedule.ui.setting
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.dicoding.courseschedule.R
+import com.dicoding.courseschedule.data.DataRepository
 import com.dicoding.courseschedule.notification.DailyReminder
+import com.dicoding.courseschedule.util.executeThread
+import com.dicoding.courseschedule.util.today
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -32,7 +36,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val dailyReminder = DailyReminder()
 
             if (isEnabled) {
-                dailyReminder.setDailyReminder(context)
+//                dailyReminder.setDailyReminder(context)
+                executeThread {
+                    val repository = DataRepository.getInstance(context)
+                    val courses = repository?.getTodaySchedule(today())
+
+                    courses?.let {
+                        if (it.isNotEmpty()) dailyReminder.showNotification(context, it)
+                    }
+                }
             } else {
                 dailyReminder.cancelAlarm(context)
             }

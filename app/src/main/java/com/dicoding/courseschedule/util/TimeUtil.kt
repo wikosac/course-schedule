@@ -35,3 +35,8 @@ fun timeDifference(day: Int, targetTime: String): String {
 
     return "($remainingTime)"
 }
+
+fun today(): Int {
+    val calendar = Calendar.getInstance()
+    return calendar.get(Calendar.DAY_OF_WEEK)
+}

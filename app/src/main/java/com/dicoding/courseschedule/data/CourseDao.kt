@@ -23,8 +23,8 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE id = :id")
     fun getCourse(id: Int): LiveData<Course>
 
-    @Query("SELECT * FROM course")
-    fun getTodaySchedule(): List<Course>
+    @Query("SELECT * FROM course WHERE day = :day")
+    fun getTodaySchedule(day: Int): List<Course>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(course: Course)
