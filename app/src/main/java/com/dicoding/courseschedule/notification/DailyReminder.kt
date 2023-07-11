@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
@@ -43,8 +42,8 @@ class DailyReminder : BroadcastReceiver() {
         }
 
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 16)
-            set(Calendar.MINUTE, 27)
+            set(Calendar.HOUR_OF_DAY, 6)
+            set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
 
@@ -65,7 +64,7 @@ class DailyReminder : BroadcastReceiver() {
         alarmManager.cancel(alarmIntent)
     }
 
-    fun showNotification(context: Context, content: List<Course>) {
+    private fun showNotification(context: Context, content: List<Course>) {
         // Show today schedules in inbox style notification & open HomeActivity when notification tapped
         val notificationStyle = NotificationCompat.InboxStyle()
         val timeString = context.resources.getString(R.string.notification_message_format)

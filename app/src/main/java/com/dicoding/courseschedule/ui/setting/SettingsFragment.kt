@@ -36,15 +36,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val dailyReminder = DailyReminder()
 
             if (isEnabled) {
-//                dailyReminder.setDailyReminder(context)
-                executeThread {
-                    val repository = DataRepository.getInstance(context)
-                    val courses = repository?.getTodaySchedule(today())
-
-                    courses?.let {
-                        if (it.isNotEmpty()) dailyReminder.showNotification(context, it)
-                    }
-                }
+                dailyReminder.setDailyReminder(context)
             } else {
                 dailyReminder.cancelAlarm(context)
             }
