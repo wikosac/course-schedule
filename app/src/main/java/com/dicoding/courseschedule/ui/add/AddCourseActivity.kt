@@ -33,8 +33,6 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
             if (it.getContentIfNotHandled()!!) {
                 Toast.makeText(this, "Course inserted successfully", Toast.LENGTH_SHORT).show()
                 finish()
-            } else {
-                Toast.makeText(this, "Failed to insert course", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -55,14 +53,20 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_insert -> {
-                val courseName = binding.edCourseName.text.toString()
-                val day = binding.spinnerDay.selectedItemPosition
-                val startTime = binding.tvStartTime.text.toString()
-                val endTime = binding.tvEndTime.text.toString()
-                val lecturer = binding.edLecturer.text.toString()
-                val note = binding.edNote.text.toString()
+                with(binding) {
+                    val courseName = edCourseName.text.toString()
+                    val day = spinnerDay.selectedItemPosition
+                    val startTime = tvStartTime.text.toString()
+                    val endTime = tvEndTime.text.toString()
+                    val lecturer = edLecturer.text.toString()
+                    val note = edNote.text.toString()
 
-                viewModel.insertCourse(courseName, day, startTime, endTime, lecturer, note)
+                    if (courseName.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+                        Toast.makeText(this@AddCourseActivity, "Please fill in the blank", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.insertCourse(courseName, day, startTime, endTime, lecturer, note)
+                }
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

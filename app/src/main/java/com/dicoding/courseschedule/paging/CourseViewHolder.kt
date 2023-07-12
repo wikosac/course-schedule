@@ -20,21 +20,16 @@ class CourseViewHolder(private val binding: ItemCourseBinding): RecyclerView.Vie
             val dayName = getByNumber(day)
             val timeFormat = String.format(timeString, dayName, startTime, endTime)
 
-            binding.tvCourse.text = courseName
-            binding.tvTime.text = timeFormat
-            binding.tvLecturer.text = lecturer
+            with(binding) {
+                tvCourse.text = courseName
+                tvTime.text = timeFormat
+                tvLecturer.text = lecturer
+            }
         }
 
         itemView.setOnClickListener {
             clickListener(course)
         }
-    }
-
-    fun clear() {
-        // Clear the view elements if needed
-        binding.tvCourse.text = null
-        binding.tvTime.text = null
-        binding.tvLecturer.text = null
     }
 
     fun getCourse(): Course = course

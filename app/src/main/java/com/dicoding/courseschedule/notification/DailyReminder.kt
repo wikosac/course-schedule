@@ -37,7 +37,7 @@ class DailyReminder : BroadcastReceiver() {
     // Implement daily reminder for every 06.00 a.m using AlarmManager
     fun setDailyReminder(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(context, DailyReminder::class.java).let { intent ->
+        val alarmPendingIntent = Intent(context, DailyReminder::class.java).let { intent ->
             PendingIntent.getBroadcast(context, ID_REPEATING, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
@@ -51,17 +51,17 @@ class DailyReminder : BroadcastReceiver() {
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
-            alarmIntent
+            alarmPendingIntent
         )
     }
 
     fun cancelAlarm(context: Context) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(context, DailyReminder::class.java).let { intent ->
+        val notifManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmPendingIntent = Intent(context, DailyReminder::class.java).let { intent ->
             PendingIntent.getBroadcast(context, ID_REPEATING, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
-        alarmManager.cancel(alarmIntent)
+        notifManager.cancel(alarmPendingIntent)
     }
 
     private fun showNotification(context: Context, content: List<Course>) {
@@ -73,17 +73,17 @@ class DailyReminder : BroadcastReceiver() {
             notificationStyle.addLine(courseData)
         }
 
-        val notificationIntent = Intent(context, HomeActivity::class.java).apply {
+        val notifIntent = Intent(context, HomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         val pendingIntent = PendingIntent.getActivity(
             context,
             ID_REPEATING,
-            notificationIntent,
+            notifIntent,
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        val notif = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(context.getString(R.string.reminder_header))
             .setContentText(context.getString(R.string.today_schedule))
             .setStyle(notificationStyle)
@@ -92,8 +92,7 @@ class DailyReminder : BroadcastReceiver() {
             .setAutoCancel(true)
             .build()
 
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notifManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -101,9 +100,9 @@ class DailyReminder : BroadcastReceiver() {
                 NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            notificationManager.createNotificationChannel(channel)
+            notifManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notifManager.notify(NOTIFICATION_ID, notif)
     }
 }

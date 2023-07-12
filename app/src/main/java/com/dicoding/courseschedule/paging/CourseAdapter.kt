@@ -24,17 +24,17 @@ class CourseAdapter(private val clickListener: (Course) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemCourseBinding.inflate(inflater, parent, false)
-        return CourseViewHolder(binding)
+        return CourseViewHolder(
+            ItemCourseBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         val course = getItem(position)
-        if (course != null) {
-            holder.bind(course, clickListener)
-        } else {
-            holder.clear()
-        }
+        if (course != null) holder.bind(course, clickListener)
     }
 }

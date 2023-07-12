@@ -46,7 +46,7 @@ class DataRepository(private val dao: CourseDao) {
     companion object {
         @Volatile
         private var instance: DataRepository? = null
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 12
 
         fun getInstance(context: Context): DataRepository? {
             return instance ?: synchronized(DataRepository::class.java) {
