@@ -2,6 +2,7 @@ package com.dicoding.courseschedule.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,7 +32,10 @@ class HomeActivity : AppCompatActivity() {
 
         val factory = HomeViewModelFactory.createFactory(this)
         viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
-        viewModel.nearestSchedule.observe(this) { showTodaySchedule(it) }
+        viewModel.nearestSchedule.observe(this) {
+            Log.d("testo", "onCreate: $it")
+            showTodaySchedule(it)
+        }
     }
 
     private fun showTodaySchedule(course: Course?) {
@@ -41,9 +45,13 @@ class HomeActivity : AppCompatActivity() {
             val time = String.format(getString(R.string.time_format), dayName, startTime, endTime)
             val remainingTime = timeDifference(day, startTime)
 
-            val cardHome = findViewById<CardHomeView>(R.id.view_home)
-            cardHome.setTime(time)
-            cardHome.setRemainingTime(remainingTime)
+            findViewById<CardHomeView>(R.id.view_home).apply {
+                setCourseName(courseName)
+                setTime(time)
+                setRemainingTime(remainingTime)
+                setLecturer(lecturer)
+                setNote(note)
+            }
         }
 
         findViewById<TextView>(R.id.tv_empty_home).visibility =
